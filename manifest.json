@@ -1,0 +1,17 @@
+{
+  "name": "Calculadora de Férias e Décimo",
+  "short_name": "Férias",
+  "description": "Calculadora de férias e décimo terceiro — Criado por Giliarde Martins",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f0fdf4",
+  "theme_color": "#10b981",
+  "icons": [
+    {
+      "src": "icone.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

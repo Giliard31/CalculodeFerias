@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Férias">
-    <meta name="description" content="Calculadora de Férias e Décimo Terceiro">
+    <meta name="description" content="Calculadora Profissional de Férias e Décimo Terceiro">
     <link rel="manifest" href="manifest.json">
     <title>🧮 Cálculo de Férias</title>
     <style>
@@ -15,105 +15,132 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
         :root {
             --primary: #10b981;
-            --primary-dark: #059669;
-            --primary-light: #d1fae5;
-            --bg: #f0fdf4;
+            --primary-dark: #047857;
+            --primary-light: #ecfdf5;
+            --bg: #f8fafc;
             --card: #ffffff;
-            --text: #1f2937;
-            --text-light: #6b7280;
-            --border: #d1fae5;
-            --success: #16a34a;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --shadow: 0 4px 12px rgba(16, 185, 129, 0.08);
+            --text-main: #111827;
+            --text-muted: #4b5563;
+            --border: #e5e7eb;
+            --success: #059669;
+            --danger: #dc2626;
+            --shadow-md: 0 8px 24px rgba(16, 185, 129, 0.08);
         }
         body {
-            background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%);
-            color: var(--text);
+            background: var(--bg);
+            color: var(--text-main);
             min-height: 100vh;
-            padding: 24px 16px 40px;
+            padding: 24px 16px 48px;
+            display: flex;
+            justify-content: center;
+            font-size: 1.05rem;
         }
         .container {
-            max-width: 460px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 480px;
         }
         header {
             text-align: center;
-            margin-bottom: 32px;
+            margin-bottom: 28px;
             padding-top: 10px;
         }
         header h1 {
-            font-size: 1.55rem;
+            font-size: 1.85rem;
+            font-weight: 700;
             color: var(--primary-dark);
             margin-bottom: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
+            letter-spacing: -0.5px;
         }
         header p {
-            font-size: 0.95rem;
-            color: var(--text-light);
+            font-size: 1.05rem;
+            color: var(--text-muted);
         }
-        .mensagem-suave {
-            background: var(--primary-light);
-            border-left: 3px solid var(--primary);
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 0.88rem;
-            color: var(--primary-dark);
-            margin-bottom: 16px;
-            display: none;
+        /* Toast Notification Customizado */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: #1e293b;
+            color: #ffffff;
+            padding: 14px 24px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 500;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 2000;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .mensagem-suave.mostrar {
-            display: block;
+        .toast.mostrar {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
         }
         .card {
             background: var(--card);
             border-radius: 20px;
             padding: 24px;
             margin-bottom: 20px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(229, 231, 235, 0.8);
         }
         .card h2 {
-            font-size: 1.05rem;
+            font-size: 1.18rem;
+            font-weight: 700;
             margin-bottom: 20px;
             color: var(--primary-dark);
             display: flex;
             align-items: center;
             gap: 8px;
-            padding-bottom: 10px;
+            padding-bottom: 12px;
             border-bottom: 1px solid var(--border);
         }
         .grupo {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
         label {
             display: block;
-            font-size: 0.9rem;
-            font-weight: 500;
+            font-size: 1rem;
+            font-weight: 600;
             margin-bottom: 8px;
-            color: var(--text);
+            color: #1f2937;
         }
         input, select {
             width: 100%;
-            padding: 14px 16px;
+            padding: 15px 18px;
             border: 2px solid var(--border);
             border-radius: 12px;
-            font-size: 1rem;
-            background: white;
-            color: var(--text);
-            transition: all 0.25s ease;
+            font-size: 1.1rem;
+            background: #f9fafb;
+            color: var(--text-main);
+            transition: all 0.2s ease;
+            appearance: none;
+        }
+        select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%3059669' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 18px;
+            padding-right: 44px;
         }
         input:focus, select:focus {
             outline: none;
+            background: #ffffff;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
         }
         .btn-calcular {
             width: 100%;
@@ -122,106 +149,157 @@
             color: white;
             border: none;
             border-radius: 12px;
-            font-size: 1.05rem;
-            font-weight: 600;
+            font-size: 1.15rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: transform 0.15s, box-shadow 0.15s;
+            transition: all 0.2s ease;
             margin-top: 8px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
         }
         .btn-calcular:active {
             transform: scale(0.98);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
-        .resultados {
-            display: none;
-            animation: aparecer 0.4s ease;
+
+        /* Estilo da Janela Modal (Pop-up Centralizado) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 1500;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
         }
-        @keyframes aparecer {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .modal-overlay.mostrar {
+            opacity: 1;
+            pointer-events: auto;
         }
-        .resultados.mostrar {
-            display: block;
+        .modal-content {
+            background: var(--card);
+            width: 100%;
+            max-width: 460px;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
+        .modal-overlay.mostrar .modal-content {
+            transform: translateY(0);
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .modal-header h2 {
+            font-size: 1.2rem;
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+        .btn-fechar-modal {
+            background: #f3f4f6;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .btn-fechar-modal:hover {
+            background: #e5e7eb;
+            color: var(--text-main);
+        }
+
         .secao {
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
         .secao-titulo {
-            font-size: 0.95rem;
-            font-weight: 600;
+            font-size: 1.05rem;
+            font-weight: 700;
             color: var(--primary-dark);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .linha {
             display: flex;
             justify-content: space-between;
             padding: 10px 0;
             border-bottom: 1px dashed var(--border);
-            font-size: 0.95rem;
+            font-size: 1.02rem;
         }
         .linha:last-child {
             border-bottom: none;
         }
         .linha.destaque {
             background: var(--primary-light);
-            margin: 6px -12px;
-            padding: 14px 12px;
+            margin: 8px -10px;
+            padding: 12px 10px;
             border-radius: 10px;
             border-bottom: none;
-            font-weight: 600;
+            font-weight: 700;
+            color: var(--primary-dark);
+            font-size: 1.08rem;
         }
         .linha.total {
-            font-size: 1.08rem;
-            font-weight: 700;
+            font-size: 1.2rem;
+            font-weight: 800;
             color: var(--primary-dark);
             padding-top: 14px;
             border-bottom: none;
             border-top: 2px solid var(--primary);
             margin-top: 8px;
         }
-        .positivo { color: var(--success); font-weight: 500; }
-        .negativo { color: var(--danger); font-weight: 500; }
+        .positivo { color: var(--success); font-weight: 600; }
+        .negativo { color: var(--danger); font-weight: 600; }
         .divisor {
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border), transparent);
-            margin: 22px 0;
-        }
-        .dica {
-            background: #fffbeb;
-            border-left: 3px solid var(--warning);
-            padding: 14px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            color: #92400e;
-            margin-top: 16px;
-            line-height: 1.7;
-        }
-        .dica strong {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 0.9rem;
+            background: var(--border);
+            margin: 16px 0;
         }
         .rodape {
             text-align: center;
             margin-top: 32px;
-            padding-top: 20px;
+            padding-top: 18px;
             border-top: 1px solid var(--border);
-            font-size: 0.85rem;
-            color: var(--text-light);
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
+
 <div class="container">
     <header>
         <h1>🧮 Cálculo de Férias</h1>
         <p>Calculadora simples, rápida e completa</p>
     </header>
 
-    <div class="mensagem-suave" id="mensagem"></div>
+    <div class="toast" id="toast"></div>
 
     <div class="card">
         <h2>📝 Seus Dados</h2>
@@ -237,12 +315,17 @@
         </div>
 
         <div class="grupo">
-            <label for="diasTrabalhados">Dias trabalhados durante as férias</label>
+            <label for="diasTrabalhados">Dias trabalhados no mês (saldo de salário)</label>
             <input type="number" id="diasTrabalhados" placeholder="Ex: 0" value="0" min="0" max="30">
         </div>
 
         <div class="grupo">
-            <label>💰 Décimo Terceiro — qual parcela você quer calcular?</label>
+            <label for="promocoes">Promoções / Prêmios (R$) <span style="font-weight:normal; font-size:0.85rem; color:var(--text-muted);">(Livre de descontos)</span></label>
+            <input type="number" id="promocoes" placeholder="Ex: 0,00" value="0" step="0.01">
+        </div>
+
+        <div class="grupo">
+            <label for="decimo">💰 Décimo Terceiro — qual parcela calcular?</label>
             <select id="decimo">
                 <option value="nenhum">Não calcular agora</option>
                 <option value="primeira">✅ Somente a 1ª Parcela (50%)</option>
@@ -251,65 +334,58 @@
             </select>
         </div>
 
-        <button class="btn-calcular" id="btnCalcular">🔢 Calcular Agora</button>
+        <button class="btn-calcular" id="btnCalcular">Calcular Agora</button>
     </div>
 
-    <div class="card resultados" id="caixaResultados">
-        <h2>📋 Resultado do Cálculo</h2>
+    <!-- Janela Modal de Resultados -->
+    <div class="modal-overlay" id="modalResultados">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📋 Resultado do Cálculo</h2>
+                <button class="btn-fechar-modal" id="btnFecharModal">✕</button>
+            </div>
 
-        <div class="secao">
-            <div class="secao-titulo">🏖️ Férias</div>
-            <div id="resumoFerias"></div>
-        </div>
+            <div class="secao">
+                <div class="secao-titulo">🏖️ Férias</div>
+                <div id="resumoFerias"></div>
+            </div>
 
-        <div class="divisor"></div>
+            <div class="divisor" id="divisorDecimo" style="display: none;"></div>
 
-        <div class="secao" id="secaoDecimo" style="display: none;">
-            <div class="secao-titulo">💰 Décimo Terceiro</div>
-            <div id="resumoDecimo"></div>
-        </div>
+            <div class="secao" id="secaoDecimo" style="display: none;">
+                <div class="secao-titulo">💰 Décimo Terceiro</div>
+                <div id="resumoDecimo"></div>
+            </div>
 
-        <div class="divisor" id="divisorTotal" style="display: none;"></div>
+            <div class="divisor" id="divisorTotal" style="display: none;"></div>
 
-        <div class="secao" id="secaoTotalGeral" style="display: none;">
-            <div id="totalGeral"></div>
-        </div>
-
-        <div class="dica">
-            <strong>ℹ️ Como funciona:</strong>
-            • <strong>Férias:</strong> Salário ÷ 30 × dias + 1/3 constitucional<br>
-            • <strong>Descontos:</strong> INSS e IR seguem a tabela oficial vigente<br>
-            • <strong>1ª parcela do 13º:</strong> 50% do salário, sem descontos<br>
-            • <strong>2ª parcela do 13º:</strong> 50% menos INSS e Imposto de Renda
+            <div class="secao" id="secaoTotalGeral" style="display: none;">
+                <div id="totalGeral"></div>
+            </div>
         </div>
     </div>
 
     <div class="rodape">
-        Criado por Giliarde Martins
+        Margem de erro para mais ou para menos R$ 50,00
     </div>
 </div>
 
 <script>
-function mostrarMensagem(texto) {
-    const el = document.getElementById('mensagem');
-    el.textContent = texto;
-    el.classList.add('mostrar');
-    setTimeout(function() { el.classList.remove('mostrar'); }, 3500);
+function mostrarToast(mensagem) {
+    const toast = document.getElementById('toast');
+    toast.textContent = mensagem;
+    toast.classList.add('mostrar');
+    setTimeout(() => {
+        toast.classList.remove('mostrar');
+    }, 3500);
 }
 
+// Tabela oficial progressiva do INSS
 const TABELA_INSS = [
     { ate: 1302.00, aliquota: 0.075 },
     { ate: 2571.29, aliquota: 0.09 },
     { ate: 3856.94, aliquota: 0.12 },
     { ate: 7507.49, aliquota: 0.14 }
-];
-
-const TABELA_IR = [
-    { ate: 2259.20, aliquota: 0, deducao: 0 },
-    { ate: 2828.65, aliquota: 0.075, deducao: 169.44 },
-    { ate: 3751.05, aliquota: 0.15, deducao: 423.58 },
-    { ate: 4664.68, aliquota: 0.225, deducao: 766.48 },
-    { acima: 4664.68, aliquota: 0.275, deducao: 1034.48 }
 ];
 
 function formatarDinheiro(valor) {
@@ -333,33 +409,29 @@ function calcularINSS(valorBase) {
     return Math.min(inss, teto);
 }
 
-function calcularIR(valorBase) {
-    for (let i = 0; i < TABELA_IR.length; i++) {
-        const faixa = TABELA_IR[i];
-        if (faixa.acima) {
-            if (valorBase > faixa.acima) {
-                return Math.max(0, valorBase * faixa.aliquota - faixa.deducao);
-            }
-        } else {
-            if (valorBase <= faixa.ate) {
-                return Math.max(0, valorBase * faixa.aliquota - faixa.deducao);
-            }
-        }
-    }
-    return 0;
-}
-
-function calcularFerias(salario, dias, diasTrabalhados) {
+function calcularFerias(salario, dias, diasTrabalhados, promocoes) {
     const valorDia = salario / 30;
     const valorFerias = valorDia * dias;
     const umTerco = valorFerias / 3;
     const valorDiasTrabalhados = valorDia * diasTrabalhados;
-    const baseCalculo = valorFerias + umTerco;
-    const inss = calcularINSS(baseCalculo);
-    const ir = calcularIR(baseCalculo - inss);
-    const totalDescontos = inss + ir;
-    const liquido = (baseCalculo + valorDiasTrabalhados) - totalDescontos;
-    return { valorFerias: valorFerias, umTerco: umTerco, valorDiasTrabalhados: valorDiasTrabalhados, bruto: baseCalculo + valorDiasTrabalhados, inss: inss, ir: ir, totalDescontos: totalDescontos, liquido: liquido };
+    
+    // Base sujeita ao INSS (Férias + 1/3 + Dias Trabalhados no Mês)
+    const baseIncidência = valorFerias + umTerco + valorDiasTrabalhados;
+    const inss = calcularINSS(baseIncidência);
+    
+    // Total bruto acumulado incluindo promoções
+    const brutoTotal = baseIncidência + promocoes;
+    const liquido = brutoTotal - inss;
+
+    return {
+        valorFerias: valorFerias,
+        umTerco: umTerco,
+        valorDiasTrabalhados: valorDiasTrabalhados,
+        promocoes: promocoes,
+        bruto: brutoTotal,
+        inss: inss,
+        liquido: liquido
+    };
 }
 
 function calcularDecimo(salario, tipo) {
@@ -367,15 +439,23 @@ function calcularDecimo(salario, tipo) {
     const valorTotal = salario;
     const primeira = valorTotal / 2;
     const baseSegunda = valorTotal / 2;
+    
     const inss = calcularINSS(baseSegunda);
-    const ir = calcularIR(baseSegunda - inss);
-    const descontos = inss + ir;
-    const segunda = baseSegunda - descontos;
+    const segunda = baseSegunda - inss;
+    
     let totalReceber = 0;
     if (tipo === 'primeira') totalReceber = primeira;
     else if (tipo === 'segunda') totalReceber = segunda;
     else totalReceber = primeira + segunda;
-    return { valorTotal: valorTotal, primeira: primeira, segundaBruta: baseSegunda, inss: inss, ir: ir, descontos: descontos, segunda: segunda, totalReceber: totalReceber };
+
+    return {
+        valorTotal: valorTotal,
+        primeira: primeira,
+        segundaBruta: baseSegunda,
+        inss: inss,
+        segunda: segunda,
+        totalReceber: totalReceber
+    };
 }
 
 function renderLinha(texto, valor, classe) {
@@ -383,58 +463,65 @@ function renderLinha(texto, valor, classe) {
     return '<div class="linha ' + classe + '"><span>' + texto + '</span><span>' + valor + '</span></div>';
 }
 
+const modal = document.getElementById('modalResultados');
+
 document.getElementById('btnCalcular').addEventListener('click', function() {
     const salario = parseFloat(document.getElementById('salario').value.replace(',', '.'));
     const diasFerias = parseInt(document.getElementById('diasFerias').value) || 30;
     const diasTrabalhados = parseInt(document.getElementById('diasTrabalhados').value) || 0;
+    const promocoes = parseFloat(document.getElementById('promocoes').value.replace(',', '.')) || 0;
     const tipoDecimo = document.getElementById('decimo').value;
 
     if (!salario || salario <= 0) {
-        mostrarMensagem('✏️ Por favor, digite seu salário para começar!');
+        mostrarToast('✏️ Informe seu salário mensal para continuar.');
         document.getElementById('salario').focus();
         return;
     }
 
-    const ferias = calcularFerias(salario, diasFerias, diasTrabalhados);
+    const ferias = calcularFerias(salario, diasFerias, diasTrabalhados, promocoes);
     const decimo = calcularDecimo(salario, tipoDecimo);
 
-    let htmlFerias = renderLinha('Salário mensal', formatarDinheiro(salario));
+    let htmlFerias = renderLinha('Salário base', formatarDinheiro(salario));
     htmlFerias += renderLinha(diasFerias + ' dias de férias', formatarDinheiro(ferias.valorFerias));
     htmlFerias += renderLinha('+ 1/3 Constitucional', formatarDinheiro(ferias.umTerco));
+    
     if (diasTrabalhados > 0) {
-        htmlFerias += renderLinha('+ ' + diasTrabalhados + ' dias trabalhados', formatarDinheiro(ferias.valorDiasTrabalhados));
+        htmlFerias += renderLinha('+ ' + diasTrabalhados + ' dias trabalhados no mês', formatarDinheiro(ferias.valorDiasTrabalhados));
     }
+    if (promocoes > 0) {
+        htmlFerias += renderLinha('+ Promoções / Prêmios', formatarDinheiro(ferias.promocoes), 'positivo');
+    }
+
     htmlFerias += renderLinha('Subtotal Bruto', formatarDinheiro(ferias.bruto));
-    htmlFerias += '<div style="margin:6px 0;"></div>';
-    htmlFerias += renderLinha('(-) INSS', formatarDinheiro(ferias.inss), 'negativo');
-    htmlFerias += renderLinha('(-) Imposto de Renda', formatarDinheiro(ferias.ir), 'negativo');
-    htmlFerias += renderLinha('Total de descontos', formatarDinheiro(ferias.totalDescontos), 'negativo');
+    htmlFerias += '<div style="margin:4px 0;"></div>';
+    htmlFerias += renderLinha('(-) INSS (Sobre férias e dias trabalhados)', formatarDinheiro(ferias.inss), 'negativo');
     htmlFerias += renderLinha('✅ FÉRIAS — Valor Líquido', formatarDinheiro(ferias.liquido), 'destaque');
     document.getElementById('resumoFerias').innerHTML = htmlFerias;
 
     const secaoDecimo = document.getElementById('secaoDecimo');
+    const divisorDecimo = document.getElementById('divisorDecimo');
     const divisorTotal = document.getElementById('divisorTotal');
     const secaoTotalGeral = document.getElementById('secaoTotalGeral');
 
     if (decimo) {
         secaoDecimo.style.display = 'block';
+        divisorDecimo.style.display = 'block';
         divisorTotal.style.display = 'block';
         secaoTotalGeral.style.display = 'block';
 
-        let htmlDecim = '';
+        let htmlDecimo = '';
         if (tipoDecimo === 'primeira' || tipoDecimo === 'ambos') {
-            htmlDecimo += renderLinha('✅ 1ª Parcela (sem descontos)', formatarDinheiro(decimo.primeira), 'positivo');
+            htmlDecimo += renderLinha('✅ 1ª Parcela (Integral 50%)', formatarDinheiro(decimo.primeira), 'positivo');
         }
         if (tipoDecimo === 'segunda' || tipoDecimo === 'ambos') {
-            if (tipoDecimo === 'ambos') htmlDecimo += '<div style="margin:8px 0; color:var(--text-light);">—</div>';
-            htmlDecimo += renderLinha('2ª Parcela — Valor Bruto', formatarDinheiro(decimo.segundaBruta));
-            htmlDecimo += renderLinha('(-) INSS', formatarDinheiro(decimo.inss), 'negativo');
-            htmlDecimo += renderLinha('(-) Imposto de Renda', formatarDinheiro(decimo.ir), 'negativo');
+            if (tipoDecimo === 'ambos') htmlDecimo += '<div style="margin:6px 0; color:var(--text-muted);">—</div>';
+            htmlDecimo += renderLinha('2ª Parcela — Bruto', formatarDinheiro(decimo.segundaBruta));
+            htmlDecimo += renderLinha('(-) INSS (Previdência)', formatarDinheiro(decimo.inss), 'negativo');
             htmlDecimo += renderLinha('✅ 2ª Parcela — Valor Líquido', formatarDinheiro(decimo.segunda), 'positivo');
         }
         if (tipoDecimo === 'ambos') {
-            htmlDecimo += '<div style="margin:8px 0; color:var(--text-light);">—</div>';
-            htmlDecimo += renderLinha('💰 Total do Décimo Terceiro', formatarDinheiro(decimo.totalReceber), 'destaque');
+            htmlDecimo += '<div style="margin:6px 0; color:var(--text-muted);">—</div>';
+            htmlDecimo += renderLinha('💰 Total 13º Salário', formatarDinheiro(decimo.totalReceber), 'destaque');
         }
         document.getElementById('resumoDecimo').innerHTML = htmlDecimo;
 
@@ -442,14 +529,26 @@ document.getElementById('btnCalcular').addEventListener('click', function() {
         document.getElementById('totalGeral').innerHTML = renderLinha('💵 VALOR TOTAL A RECEBER', formatarDinheiro(totalGeral), 'total');
     } else {
         secaoDecimo.style.display = 'none';
+        divisorDecimo.style.display = 'none';
         divisorTotal.style.display = 'none';
         secaoTotalGeral.style.display = 'none';
     }
 
-    document.getElementById('caixaResultados').classList.add('mostrar');
-    document.getElementById('caixaResultados').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Exibe o modal centralizado sem rolar a página
+    modal.classList.add('mostrar');
+});
+
+// Fechar modal pelo botão X
+document.getElementById('btnFecharModal').addEventListener('click', function() {
+    modal.classList.remove('mostrar');
+});
+
+// Fechar modal clicando fora da caixinha
+modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+        modal.classList.remove('mostrar');
+    }
 });
 </script>
 </body>
 </html>
-

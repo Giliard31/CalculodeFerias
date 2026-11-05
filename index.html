@@ -294,7 +294,7 @@ function mostrarMensagem(texto) {
     const el = document.getElementById('mensagem');
     el.textContent = texto;
     el.classList.add('mostrar');
-    setTimeout(() => el.classList.remove('mostrar'), 3500);
+    setTimeout(function() { el.classList.remove('mostrar'); }, 3500);
 }
 
 const TABELA_INSS = [
@@ -334,7 +334,8 @@ function calcularINSS(valorBase) {
 }
 
 function calcularIR(valorBase) {
-    for (let faixa of TABELA_IR) {
+    for (let i = 0; i < TABELA_IR.length; i++) {
+        const faixa = TABELA_IR[i];
         if (faixa.acima) {
             if (valorBase > faixa.acima) {
                 return Math.max(0, valorBase * faixa.aliquota - faixa.deducao);
@@ -358,7 +359,7 @@ function calcularFerias(salario, dias, diasTrabalhados) {
     const ir = calcularIR(baseCalculo - inss);
     const totalDescontos = inss + ir;
     const liquido = (baseCalculo + valorDiasTrabalhados) - totalDescontos;
-    return { valorFerias, umTerco, valorDiasTrabalhados, bruto: baseCalculo + valorDiasTrabalhados, inss, ir, totalDescontos, liquido };
+    return { valorFerias: valorFerias, umTerco: umTerco, valorDiasTrabalhados: valorDiasTrabalhados, bruto: baseCalculo + valorDiasTrabalhados, inss: inss, ir: ir, totalDescontos: totalDescontos, liquido: liquido };
 }
 
 function calcularDecimo(salario, tipo) {
@@ -374,11 +375,12 @@ function calcularDecimo(salario, tipo) {
     if (tipo === 'primeira') totalReceber = primeira;
     else if (tipo === 'segunda') totalReceber = segunda;
     else totalReceber = primeira + segunda;
-    return { valorTotal, primeira, segundaBruta: baseSegunda, inss, ir, descontos, segunda, totalReceber };
+    return { valorTotal: valorTotal, primeira: primeira, segundaBruta: baseSegunda, inss: inss, ir: ir, descontos: descontos, segunda: segunda, totalReceber: totalReceber };
 }
 
-function renderLinha(texto, valor, classe = '') {
-    return `<div class="linha ${classe}"><span>${texto}</span><span>${valor}</span></div>`;
+function renderLinha(texto, valor, classe) {
+    if (!classe) classe = '';
+    return '<div class="linha ' + classe + '"><span>' + texto + '</span><span>' + valor + '</span></div>';
 }
 
 document.getElementById('btnCalcular').addEventListener('click', function() {
@@ -397,10 +399,10 @@ document.getElementById('btnCalcular').addEventListener('click', function() {
     const decimo = calcularDecimo(salario, tipoDecimo);
 
     let htmlFerias = renderLinha('Salário mensal', formatarDinheiro(salario));
-    htmlFerias += renderLinha(`${diasFerias} dias de férias`, formatarDinheiro(ferias.valorFerias));
+    htmlFerias += renderLinha(diasFerias + ' dias de férias', formatarDinheiro(ferias.valorFerias));
     htmlFerias += renderLinha('+ 1/3 Constitucional', formatarDinheiro(ferias.umTerco));
     if (diasTrabalhados > 0) {
-        htmlFerias += renderLinha(`+ ${diasTrabalhados} dias trabalhados`, formatarDinheiro(ferias.valorDiasTrabalhados));
+        htmlFerias += renderLinha('+ ' + diasTrabalhados + ' dias trabalhados', formatarDinheiro(ferias.valorDiasTrabalhados));
     }
     htmlFerias += renderLinha('Subtotal Bruto', formatarDinheiro(ferias.bruto));
     htmlFerias += '<div style="margin:6px 0;"></div>';
@@ -419,7 +421,7 @@ document.getElementById('btnCalcular').addEventListener('click', function() {
         divisorTotal.style.display = 'block';
         secaoTotalGeral.style.display = 'block';
 
-        let htmlDecimo = '';
+        let htmlDecim = '';
         if (tipoDecimo === 'primeira' || tipoDecimo === 'ambos') {
             htmlDecimo += renderLinha('✅ 1ª Parcela (sem descontos)', formatarDinheiro(decimo.primeira), 'positivo');
         }

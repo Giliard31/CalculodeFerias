@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Férias">
     <meta name="description" content="Calculadora de Férias e Décimo Terceiro">
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQ2FsY3VsYWRvcmEgZGUgRkVSSUFTIGUgR8OpcmlhcyIsInNob3J0X25hbWUiOiJGw6JpYXMiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI2Y2ZmZmYiLCJ0aGVtZV9jb2xvciI6IiMxMGI5ODEiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sLDxzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB2aWV3Qm94PScwIDAgMTgwIDE4MCc+PHJlY3Qgd2lkdGg9JzE4MCcgaGVpZ2h0PScxODAnIGZpbGw9JyMxMGI5ODEnIHJ4PScyNCcvPjx0ZXh0IHg9JzkwJyB5PScxMDUnIGZvbnQtc2l6ZT0nNzAnIGZpbGw9J3doaXRlJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJz7wn5CrPC90ZXh0Pjwvc3ZnPiIsInNpemVzIjoiMTkyeDE5MiIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn1dfQ==">
+    <link rel="manifest" href="manifest.json">
     <title>🧮 Cálculo de Férias</title>
     <style>
         * {
@@ -221,10 +221,8 @@
         <p>Calculadora simples, rápida e completa</p>
     </header>
 
-    <!-- Mensagem suave (sem alerta!) -->
     <div class="mensagem-suave" id="mensagem"></div>
 
-    <!-- DADOS -->
     <div class="card">
         <h2>📝 Seus Dados</h2>
         
@@ -256,11 +254,9 @@
         <button class="btn-calcular" id="btnCalcular">🔢 Calcular Agora</button>
     </div>
 
-    <!-- RESULTADOS — Tudo aqui na mesma tela! -->
     <div class="card resultados" id="caixaResultados">
         <h2>📋 Resultado do Cálculo</h2>
 
-        <!-- FÉRIAS -->
         <div class="secao">
             <div class="secao-titulo">🏖️ Férias</div>
             <div id="resumoFerias"></div>
@@ -268,7 +264,6 @@
 
         <div class="divisor"></div>
 
-        <!-- DÉCIMO TERCEIRO -->
         <div class="secao" id="secaoDecimo" style="display: none;">
             <div class="secao-titulo">💰 Décimo Terceiro</div>
             <div id="resumoDecimo"></div>
@@ -276,7 +271,6 @@
 
         <div class="divisor" id="divisorTotal" style="display: none;"></div>
 
-        <!-- TOTAL GERAL -->
         <div class="secao" id="secaoTotalGeral" style="display: none;">
             <div id="totalGeral"></div>
         </div>
@@ -290,16 +284,12 @@
         </div>
     </div>
 
-    <!-- RODAPÉ -->
     <div class="rodape">
         Criado por Giliarde Martins
     </div>
 </div>
 
 <script>
-// ==========================================
-// FUNÇÃO DE MENSAGEM — SEM ALERTA CHATO!
-// ==========================================
 function mostrarMensagem(texto) {
     const el = document.getElementById('mensagem');
     el.textContent = texto;
@@ -307,9 +297,6 @@ function mostrarMensagem(texto) {
     setTimeout(() => el.classList.remove('mostrar'), 3500);
 }
 
-// ==========================================
-// TABELAS OFICIAIS
-// ==========================================
 const TABELA_INSS = [
     { ate: 1302.00, aliquota: 0.075 },
     { ate: 2571.29, aliquota: 0.09 },
@@ -332,7 +319,6 @@ function formatarDinheiro(valor) {
 function calcularINSS(valorBase) {
     let inss = 0;
     let faixaAnterior = 0;
-    
     for (let i = 0; i < TABELA_INSS.length; i++) {
         const faixa = TABELA_INSS[i];
         if (valorBase <= faixa.ate) {
@@ -367,19 +353,16 @@ function calcularFerias(salario, dias, diasTrabalhados) {
     const valorFerias = valorDia * dias;
     const umTerco = valorFerias / 3;
     const valorDiasTrabalhados = valorDia * diasTrabalhados;
-    
     const baseCalculo = valorFerias + umTerco;
     const inss = calcularINSS(baseCalculo);
     const ir = calcularIR(baseCalculo - inss);
     const totalDescontos = inss + ir;
     const liquido = (baseCalculo + valorDiasTrabalhados) - totalDescontos;
-    
     return { valorFerias, umTerco, valorDiasTrabalhados, bruto: baseCalculo + valorDiasTrabalhados, inss, ir, totalDescontos, liquido };
 }
 
 function calcularDecimo(salario, tipo) {
     if (tipo === 'nenhum') return null;
-    
     const valorTotal = salario;
     const primeira = valorTotal / 2;
     const baseSegunda = valorTotal / 2;
@@ -387,12 +370,10 @@ function calcularDecimo(salario, tipo) {
     const ir = calcularIR(baseSegunda - inss);
     const descontos = inss + ir;
     const segunda = baseSegunda - descontos;
-    
     let totalReceber = 0;
     if (tipo === 'primeira') totalReceber = primeira;
     else if (tipo === 'segunda') totalReceber = segunda;
     else totalReceber = primeira + segunda;
-    
     return { valorTotal, primeira, segundaBruta: baseSegunda, inss, ir, descontos, segunda, totalReceber };
 }
 
@@ -400,38 +381,35 @@ function renderLinha(texto, valor, classe = '') {
     return `<div class="linha ${classe}"><span>${texto}</span><span>${valor}</span></div>`;
 }
 
-document.getElementById('btnCalcular').addEventListener('click', () => {
+document.getElementById('btnCalcular').addEventListener('click', function() {
     const salario = parseFloat(document.getElementById('salario').value.replace(',', '.'));
     const diasFerias = parseInt(document.getElementById('diasFerias').value) || 30;
     const diasTrabalhados = parseInt(document.getElementById('diasTrabalhados').value) || 0;
     const tipoDecimo = document.getElementById('decimo').value;
-    
-    // ✅ Mensagem suave — sem alerta!
+
     if (!salario || salario <= 0) {
         mostrarMensagem('✏️ Por favor, digite seu salário para começar!');
         document.getElementById('salario').focus();
         return;
     }
-    
+
     const ferias = calcularFerias(salario, diasFerias, diasTrabalhados);
     const decimo = calcularDecimo(salario, tipoDecimo);
-    
-    // FÉRIAS
-    let htmlFerias = `
-        ${renderLinha('Salário mensal', formatarDinheiro(salario))}
-        ${renderLinha(`${diasFerias} dias de férias`, formatarDin,heiro(ferias.valorFerias))}
-        ${renderLinha('+ 1/3 Constitucional', formatarDinheiro(ferias.umTerco))}
-        ${diasTrabalhados > 0 ? renderLinha(`+ ${diasTrabalhados} dias trabalhados`, formatarDinheiro(ferias.valorDiasTrabalhados)) : ''}
-        ${renderLinha('Subtotal Bruto', formatarDinheiro(ferias.bruto))}
-        <div style="margin:6px 0;"></div>
-        ${renderLinha('(-) INSS', formatarDinheiro(ferias.inss), 'negativo')}
-        ${renderLinha('(-) Imposto de Renda', formatarDinheiro(ferias.ir), 'negativo')}
-        ${renderLinha('Total de descontos', formatarDinheiro(ferias.totalDescontos), 'negativo')}
-        ${renderLinha('✅ FÉRIAS — Valor Líquido', formatarDinheiro(ferias.liquido), 'destaque')}
-    `;
+
+    let htmlFerias = renderLinha('Salário mensal', formatarDinheiro(salario));
+    htmlFerias += renderLinha(`${diasFerias} dias de férias`, formatarDinheiro(ferias.valorFerias));
+    htmlFerias += renderLinha('+ 1/3 Constitucional', formatarDinheiro(ferias.umTerco));
+    if (diasTrabalhados > 0) {
+        htmlFerias += renderLinha(`+ ${diasTrabalhados} dias trabalhados`, formatarDinheiro(ferias.valorDiasTrabalhados));
+    }
+    htmlFerias += renderLinha('Subtotal Bruto', formatarDinheiro(ferias.bruto));
+    htmlFerias += '<div style="margin:6px 0;"></div>';
+    htmlFerias += renderLinha('(-) INSS', formatarDinheiro(ferias.inss), 'negativo');
+    htmlFerias += renderLinha('(-) Imposto de Renda', formatarDinheiro(ferias.ir), 'negativo');
+    htmlFerias += renderLinha('Total de descontos', formatarDinheiro(ferias.totalDescontos), 'negativo');
+    htmlFerias += renderLinha('✅ FÉRIAS — Valor Líquido', formatarDinheiro(ferias.liquido), 'destaque');
     document.getElementById('resumoFerias').innerHTML = htmlFerias;
 
-    // DÉCIMO TERCEIRO
     const secaoDecimo = document.getElementById('secaoDecimo');
     const divisorTotal = document.getElementById('divisorTotal');
     const secaoTotalGeral = document.getElementById('secaoTotalGeral');
@@ -442,64 +420,33 @@ document.getElementById('btnCalcular').addEventListener('click', () => {
         secaoTotalGeral.style.display = 'block';
 
         let htmlDecimo = '';
-
         if (tipoDecimo === 'primeira' || tipoDecimo === 'ambos') {
             htmlDecimo += renderLinha('✅ 1ª Parcela (sem descontos)', formatarDinheiro(decimo.primeira), 'positivo');
         }
-
         if (tipoDecimo === 'segunda' || tipoDecimo === 'ambos') {
-            if (tipoDecimo === 'ambos') htmlDecimo += `<div style="margin:8px 0; font-size:0.85rem; color:var(--text-light);">—</div>`;
+            if (tipoDecimo === 'ambos') htmlDecimo += '<div style="margin:8px 0; color:var(--text-light);">—</div>';
             htmlDecimo += renderLinha('2ª Parcela — Valor Bruto', formatarDinheiro(decimo.segundaBruta));
             htmlDecimo += renderLinha('(-) INSS', formatarDinheiro(decimo.inss), 'negativo');
             htmlDecimo += renderLinha('(-) Imposto de Renda', formatarDinheiro(decimo.ir), 'negativo');
             htmlDecimo += renderLinha('✅ 2ª Parcela — Valor Líquido', formatarDinheiro(decimo.segunda), 'positivo');
         }
-
         if (tipoDecimo === 'ambos') {
-            htmlDecimo += `<div style="margin:8px 0; font-size:0.85rem; color:var(--text-light);">—</div>`;
+            htmlDecimo += '<div style="margin:8px 0; color:var(--text-light);">—</div>';
             htmlDecimo += renderLinha('💰 Total do Décimo Terceiro', formatarDinheiro(decimo.totalReceber), 'destaque');
         }
-
         document.getElementById('resumoDecimo').innerHTML = htmlDecimo;
 
-        // TOTAL GERAL
         const totalGeral = ferias.liquido + decimo.totalReceber;
-        document.getElementById('totalGeral').innerHTML = renderLinha(
-            '💵 VALOR TOTAL A RECEBER',
-            formatarDinheiro(totalGeral),
-            'total'
-        );
+        document.getElementById('totalGeral').innerHTML = renderLinha('💵 VALOR TOTAL A RECEBER', formatarDinheiro(totalGeral), 'total');
     } else {
         secaoDecimo.style.display = 'none';
         divisorTotal.style.display = 'none';
         secaoTotalGeral.style.display = 'none';
     }
 
-    // MOSTRAR RESULTADOS
     document.getElementById('caixaResultados').classList.add('mostrar');
     document.getElementById('caixaResultados').scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
-
-// ==========================================
-// INSTALAÇÃO DO PWA — SEM ALERTAS CHATOS
-// ==========================================
-let promptInstalacao;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    promptInstalacao = e;
-    // Apenas disponível — NÃO mostra mensagem automática
-});
-
-// Registrar Service Worker para funcionar offline
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('data:application/javascript,' + encodeURIComponent(`
-            self.addEventListener('install', e => self.skipWaiting());
-            self.addEventListener('activate', e => e.waitUntil(clients.claim()));
-        `)).catch(() => {});
-    });
-}
 </script>
 </body>
 </html>
